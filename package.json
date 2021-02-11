@@ -3,12 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "engines": {
-    "yarn": "1.21.1"
-  },
   "scripts": {
     "dev": "nodemon --exec sucrase-node src/index.js",
-    "start": "node build/index.js",
     "build": "sucrase ./src -d ./build --transforms imports"
   },
   "dependencies": {

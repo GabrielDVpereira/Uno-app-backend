@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "engines": {
+    "node": "12.10.0",
+    "yarn": "1.21.1"
+  },
   "scripts": {
     "dev": "nodemon --exec sucrase-node src/index.js",
     "start": "node build/index.js",

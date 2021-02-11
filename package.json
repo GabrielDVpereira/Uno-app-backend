@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon --exec sucrase-node src/index.js",
-    "build": "sucrase ./src -d ./build --transforms imports"
+    "build": "sucrase ./src -d ./build --transforms imports",
+    "lint": "eslint --ext .js,.ts,.tsx src/"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",

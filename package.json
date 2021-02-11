@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon --exec sucrase-node src/index.js",
+    "start": "nodemon --exec sucrase-node src/index.js",
     "build": "sucrase ./src -d ./build --transforms imports",
     "lint": "eslint --ext .js,.ts,.tsx src/"
   },

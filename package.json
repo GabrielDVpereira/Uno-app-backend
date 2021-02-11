@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --exec sucrase-node src/index.js",
     "start": "node build/index.js",
-    "prestart": "sucrase ./src -d ./build --transforms imports"
+    "build": "sucrase ./src -d ./build --transforms imports"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",

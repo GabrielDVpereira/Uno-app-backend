@@ -1,13 +1,32 @@
-import Sequelize from "sequelize";
-import databaseConfig from "../config/database";
+import mongoose from "mongoose";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
 class Database {
   constructor() {
     this.init();
   }
 
-  init() {
-    this.connection = new Sequelize(databaseConfig);
+  async init() {
+    const uri =
+      process.env.NODE_ENV === "test"
+        ? this.getTestUri()
+        : process.env.MONGO_URI;
+    console.log(uri);
+    try {
+      await mongoose.connect(uri, {
+        useNewUrlParser: true,
+        useFindAndModify: false,
+        useUnifiedTopology: true,
+      });
+      console.log("Sucessfully connected to the database");
+    } catch (error) {
+      console.log("Erro to connect to database", error);
+    }
+  }
+
+  async getTestUri() {
+    const mongod = new MongoMemoryServer();
+    return await mongod.getUri();
   }
 }
 

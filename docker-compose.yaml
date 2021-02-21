@@ -4,7 +4,7 @@ services:
   app:
     build: .
     depends_on:
-      - postgres
+      - mongo
     ports:
       - 5000:5000
     volumes:
@@ -13,15 +13,9 @@ services:
 
     command: yarn dev
 
-  postgres:
-    image: postgres:13
-    env_file:
-      - .env
+  mongo:
+    image: mongo
     ports:
-      - "5432:5432"
+      - "27017:27017"
     volumes:
-      - ./postgres:/var/lib/postgresql/data
-  redis:
-    image: redis
-    ports:
-      - "6379:6379"
+      - ./mongo:/data/db

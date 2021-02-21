@@ -1,10 +1,13 @@
 import express from "express";
 import dotenv from "dotenv";
-import "./database";
 
 dotenv.config({
   path: process.env.NODE_ENV === "test" ? ".env.test" : ".env",
 });
+
+import "./database";
+import "./services/firebase";
+import setRoutes from "./routes/index.routes";
 
 class App {
   constructor() {
@@ -13,9 +16,7 @@ class App {
   }
 
   init() {
-    this.app.use("/", (req, res) => {
-      res.send("App is runnig :)");
-    });
+    setRoutes(this.app);
   }
 }
 

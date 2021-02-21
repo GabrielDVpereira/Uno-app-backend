@@ -9,9 +9,8 @@ class Database {
   async init() {
     const uri =
       process.env.NODE_ENV === "test"
-        ? this.getTestUri()
+        ? await this.getTestUri()
         : process.env.MONGO_URI;
-    console.log(uri);
     try {
       await mongoose.connect(uri, {
         useNewUrlParser: true,
@@ -24,9 +23,24 @@ class Database {
     }
   }
 
+  async closeDb() {
+    await mongoose.connection.dropDatabase();
+    await mongoose.connection.close();
+    await this.mongod.stop();
+  }
+  async clearDb() {
+    const collections = mongoose.connection.collections;
+
+    for (const key in collections) {
+      const collection = collections[key];
+      await collection.deleteMany();
+    }
+  }
+
   async getTestUri() {
-    const mongod = new MongoMemoryServer();
-    return await mongod.getUri();
+    this.mongod = new MongoMemoryServer();
+    const uri = await this.mongod.getUri();
+    return uri;
   }
 }
 

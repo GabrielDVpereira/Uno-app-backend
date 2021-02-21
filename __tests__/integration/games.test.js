@@ -5,8 +5,20 @@ import app from "../../src/app";
 
 describe("GAME TEST SUITS", () => {
   it("should sucessfully create a game", async () => {
-    request(app).post("/api/games").send({
-      userId: "teste",
-    });
+    jest.setTimeout(30000);
+
+    const response = await request(app)
+      .post("/api/games")
+      .send({
+        userId: "teste",
+        players: [
+          {
+            name: "Gabriel",
+          },
+        ],
+        rounds: 1,
+      });
+
+    expect(response.body).toHaveProperty("_id");
   });
 });

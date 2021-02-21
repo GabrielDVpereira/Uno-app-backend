@@ -1,9 +1,8 @@
 import express from "express";
+import GameController from "../controllers/Game";
 
 const routes = express.Router();
 
-routes.get("/games", (req, res) => {
-  res.send("gamess");
-});
+routes.post("/games", GameController.create);
 
 export default routes;

@@ -3,3 +3,5 @@ node_modules
 .env.test
 yarn.lock
 mongo
+mongodb-binaries
+yarn-error.log

@@ -16,6 +16,7 @@ class App {
   }
 
   init() {
+    this.app.use(express.json());
     setRoutes(this.app);
   }
 }

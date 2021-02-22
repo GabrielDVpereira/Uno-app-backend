@@ -2,11 +2,13 @@
 
 import request from "supertest";
 import app from "../../src/app";
+import db from "../../src/database";
 
 describe("GAME TEST SUITS", () => {
-  it("should sucessfully create a game", async () => {
-    jest.setTimeout(30000);
+  afterEach(async () => await db.clearDb());
+  afterAll(async () => await db.closeDb());
 
+  it("should sucessfully create a game", async () => {
     const response = await request(app)
       .post("/api/games")
       .send({

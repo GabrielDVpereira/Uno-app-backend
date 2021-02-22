@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { MongoMemoryServer } from "mongodb-memory-server";
+const { MongoMemoryServer } = require("mongodb-memory-server");
 
 class Database {
   constructor() {
@@ -11,6 +11,7 @@ class Database {
       process.env.NODE_ENV === "test"
         ? await this.getTestUri()
         : process.env.MONGO_URI;
+
     try {
       await mongoose.connect(uri, {
         useNewUrlParser: true,
@@ -39,8 +40,7 @@ class Database {
 
   async getTestUri() {
     this.mongod = new MongoMemoryServer();
-    const uri = await this.mongod.getUri();
-    return uri;
+    return await this.mongod.getUri();
   }
 }
 

@@ -20,7 +20,7 @@ describe("GAME TEST SUITS", () => {
         ],
         rounds: 1,
       });
-
+    console.log(response.body);
     expect(response.body).toHaveProperty("_id");
   });
 });

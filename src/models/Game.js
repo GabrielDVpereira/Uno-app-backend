@@ -13,7 +13,7 @@ const Game = new mongoose.Schema(
         isWinner: { type: Boolean, default: false },
       },
     ],
-    rounds: {
+    totalRounds: {
       type: Number,
       required: true,
     },
@@ -21,10 +21,12 @@ const Game = new mongoose.Schema(
       type: Number,
       default: 1,
     },
-    total: {
-      type: Number,
-      default: 0,
-    },
+    match: [
+      {
+        round: Number,
+        players: [{ name: String, points: { type: Number, default: 0 } }],
+      },
+    ],
   },
   {
     timestamps: true,

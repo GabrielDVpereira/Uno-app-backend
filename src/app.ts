@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Express } from "express";
 import dotenv from "dotenv";
 
 dotenv.config({
@@ -6,10 +6,10 @@ dotenv.config({
 });
 
 import "./database";
-import "./services/firebase";
 import setRoutes from "./routes/index.routes";
 
 class App {
+  app: Express;
   constructor() {
     this.app = express();
     this.init();

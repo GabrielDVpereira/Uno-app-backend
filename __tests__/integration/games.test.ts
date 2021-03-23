@@ -5,8 +5,8 @@ import app from "../../src/app";
 import db from "../../src/database";
 
 describe("GAME TEST SUITS", () => {
-  afterEach(async () => await db.clearDb());
-  afterAll(async () => await db.closeDb());
+  afterEach(async () => await db.clearMongoDb());
+  afterAll(async () => await db.closeDbMongoDB());
 
   it("should sucessfully create a game", async () => {
     const response = await request(app)
@@ -20,7 +20,6 @@ describe("GAME TEST SUITS", () => {
         ],
         rounds: 1,
       });
-    console.log(response.body);
     expect(response.body).toHaveProperty("_id");
   });
 });

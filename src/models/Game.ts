@@ -1,9 +1,22 @@
-import mongoose from "mongoose";
+import { Schema, Model, Document, Types, model } from "mongoose";
 
-const Game = new mongoose.Schema(
+interface Game extends Document {
+  userId: Types.ObjectId;
+  players: [{ name: string; points: number; isWinner: boolean }];
+  totalRounds: number;
+  currentRound: number;
+  match: [
+    {
+      round: number;
+      players: [{ name: string; points: number; isWinner: boolean }];
+    }
+  ];
+}
+
+const GameSchema = new Schema<Game, Model<Game>>(
   {
     userId: {
-      type: String,
+      type: Schema.Types.ObjectId,
       required: true,
     },
     players: [
@@ -30,7 +43,8 @@ const Game = new mongoose.Schema(
   },
   {
     timestamps: true,
+    collection: "game",
   }
 );
 
-export default mongoose.model("Game", Game);
+export default model<Game, Model<Game>>("Game", GameSchema);

@@ -1,16 +1,24 @@
 import mongoose from "mongoose";
-const { MongoMemoryServer } = require("mongodb-memory-server");
+import redis, { ClientOpts, RedisClient } from "redis";
+import clientConfig from "../config/redis";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
 class Database {
+  redisClient: RedisClient;
+  mongod: MongoMemoryServer;
+
   constructor() {
-    this.init();
+    this.redisClient = this.initRedisDb();
+    this.mongod = new MongoMemoryServer();
+    this.initMongoDb();
+    this.initRedisDb();
   }
 
-  async init() {
+  async initMongoDb() {
     const uri =
       process.env.NODE_ENV === "test"
         ? await this.getTestUri()
-        : process.env.MONGO_URI;
+        : process.env.MONGO_URI!;
 
     try {
       await mongoose.connect(uri, {
@@ -24,22 +32,25 @@ class Database {
     }
   }
 
-  async closeDb() {
+  initRedisDb() {
+    return redis.createClient(clientConfig as ClientOpts);
+  }
+
+  async closeDbMongoDB() {
     await mongoose.connection.dropDatabase();
     await mongoose.connection.close();
     await this.mongod.stop();
   }
-  async clearDb() {
+  async clearMongoDb() {
     const collections = mongoose.connection.collections;
 
     for (const key in collections) {
       const collection = collections[key];
-      await collection.deleteMany();
+      await collection.deleteMany({});
     }
   }
 
   async getTestUri() {
-    this.mongod = new MongoMemoryServer();
     return await this.mongod.getUri();
   }
 }

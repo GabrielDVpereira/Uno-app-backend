@@ -5,3 +5,4 @@ yarn.lock
 mongo
 mongodb-binaries
 yarn-error.log
+redis.conf

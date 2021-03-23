@@ -1,10 +1,10 @@
 import Game from "../models/Game";
+import { Request, Response } from "express";
 
 class GameController {
-  async create(req, res) {
+  async create(req: Request, res: Response) {
     try {
       const game = await Game.create(req.body);
-
       return res.json(game);
     } catch (error) {
       return res.status(400).json({

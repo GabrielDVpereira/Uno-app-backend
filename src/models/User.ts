@@ -31,7 +31,7 @@ const UserSchema = new Schema<User, Model<User>>(
   }
 );
 
-UserSchema.methods.generateJWT = function (this: User) {
+UserSchema.methods.generateJWT = function generateJWT(this: User) {
   const token = jwt.sign({ _id: this._id }, process.env.PRIVATE_KEY!, {
     expiresIn: "3600s",
   });
@@ -42,7 +42,7 @@ UserSchema.methods.generateJWT = function (this: User) {
   return { token, refreshToken };
 };
 
-UserSchema.pre("save", function (this: User) {
+UserSchema.pre("save", function beforeSave(this: User) {
   const salt = genSaltSync(8000);
   this.password = hashSync(this.password, salt);
 });

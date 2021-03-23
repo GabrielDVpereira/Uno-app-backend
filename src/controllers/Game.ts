@@ -1,5 +1,5 @@
-import Game from "../models/Game";
 import { Request, Response } from "express";
+import Game from "../models/Game";
 
 class GameController {
   async create(req: Request, res: Response) {

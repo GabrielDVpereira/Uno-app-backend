@@ -1,5 +1,6 @@
-import gameRoutes from "./games.routes";
 import { Express } from "express";
-export default function setRoutes(app: Express) {
+import gameRoutes from "./games.routes";
+
+export default function setRoutes(app: Express): void {
   app.use("/api", [gameRoutes]);
 }

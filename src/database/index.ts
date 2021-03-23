@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 import redis, { ClientOpts, RedisClient } from "redis";
-import clientConfig from "../config/redis";
 import { MongoMemoryServer } from "mongodb-memory-server";
+import clientConfig from "../config/redis";
 
 class Database {
   redisClient: RedisClient;
+
   mongod: MongoMemoryServer;
 
   constructor() {
@@ -41,17 +42,18 @@ class Database {
     await mongoose.connection.close();
     await this.mongod.stop();
   }
-  async clearMongoDb() {
-    const collections = mongoose.connection.collections;
 
-    for (const key in collections) {
+  async clearMongoDb() {
+    const { collections } = mongoose.connection;
+
+    Object.keys(collections).forEach(async (key) => {
       const collection = collections[key];
       await collection.deleteMany({});
-    }
+    });
   }
 
   async getTestUri() {
-    return await this.mongod.getUri();
+    return this.mongod.getUri();
   }
 }
 

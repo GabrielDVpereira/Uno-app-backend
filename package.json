@@ -5,8 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/index.ts",
-    "start": "node build/index.js",
-    "prestart": "sucrase ./src -d ./build --transforms imports",
+    "start": "node bundle/src/index.js",
+    "prestart": "tsc",
     "lint": "eslint --ext .js,.ts,.tsx src/",
     "test": "NODE_ENV=test jest --detectOpenHandles --forceExit"
   },

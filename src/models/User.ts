@@ -3,11 +3,12 @@ import jwt from "jsonwebtoken";
 import { hashSync, genSaltSync } from "bcrypt";
 import redisService from "../services/redis";
 
-interface User extends Document {
+export interface User extends Document {
   name: string;
   email: string;
   password: string;
   generateJWT(): { token: string; refresToken: string };
+  refreshToken(): { token: string };
 }
 
 const UserSchema = new Schema<User, Model<User>>(
@@ -33,7 +34,7 @@ const UserSchema = new Schema<User, Model<User>>(
 
 UserSchema.methods.generateJWT = function generateJWT(this: User) {
   const token = jwt.sign({ _id: this._id }, process.env.PRIVATE_KEY!, {
-    expiresIn: "3600s",
+    expiresIn: 3600,
   });
 
   const refreshToken = jwt.sign({ _id: this._id }, process.env.REFRESH_KEY!);
@@ -43,7 +44,7 @@ UserSchema.methods.generateJWT = function generateJWT(this: User) {
 };
 
 UserSchema.pre("save", function beforeSave(this: User) {
-  const salt = genSaltSync(8000);
+  const salt = genSaltSync(10);
   this.password = hashSync(this.password, salt);
 });
 

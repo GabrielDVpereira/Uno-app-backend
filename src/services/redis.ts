@@ -3,12 +3,15 @@ import database from "../database";
 class RedisService {
   async saveRefreshTokenRedis(refreshToken: string) {
     const refreshTokenList = await this.getRedisByKey("@refreshToken");
-
-    if (refreshTokenList) {
+    if (refreshTokenList.length) {
       this.setRedisByKey("@refreshToken", [...refreshTokenList, refreshToken]);
     } else {
       this.setRedisByKey("@refreshToken", [refreshToken]);
     }
+  }
+
+  async getRefreshTokenRedis() {
+    return this.getRedisByKey("@refreshToken");
   }
 
   getRedisByKey(key: string) {
@@ -18,6 +21,7 @@ class RedisService {
         if (reply) {
           resolve(JSON.parse(reply));
         }
+        resolve([]);
       });
     });
   }

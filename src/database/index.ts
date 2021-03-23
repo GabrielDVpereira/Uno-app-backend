@@ -10,9 +10,8 @@ class Database {
 
   constructor() {
     this.redisClient = this.initRedisDb();
-    this.mongod = new MongoMemoryServer();
     this.initMongoDb();
-    this.initRedisDb();
+    this.mongod = new MongoMemoryServer();
   }
 
   async initMongoDb() {

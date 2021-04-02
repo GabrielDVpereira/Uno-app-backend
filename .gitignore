@@ -7,3 +7,4 @@ mongodb-binaries
 yarn-error.log
 redis.conf
 bundle
+backend/mongo

@@ -1,6 +1,6 @@
 import { Document, Model, model, Schema } from "mongoose";
 import jwt from "jsonwebtoken";
-import { hashSync, genSaltSync } from "bcrypt";
+import { hashSync, genSaltSync, compareSync } from "bcrypt";
 import redisService from "../services/redis";
 
 export interface User extends Document {
@@ -8,7 +8,7 @@ export interface User extends Document {
   email: string;
   password: string;
   generateJWT(): { token: string; refresToken: string };
-  refreshToken(): { token: string };
+  checkUserPass: (passwordToCheck: string) => boolean;
 }
 
 const UserSchema = new Schema<User, Model<User>>(
@@ -41,6 +41,13 @@ UserSchema.methods.generateJWT = function generateJWT(this: User) {
   redisService.saveRefreshTokenRedis(refreshToken);
 
   return { token, refreshToken };
+};
+
+UserSchema.methods.checkUserPass = function checkUserPass(
+  this: User,
+  passwordToCheck: string
+) {
+  return compareSync(passwordToCheck, this.password);
 };
 
 UserSchema.pre("save", function beforeSave(this: User) {

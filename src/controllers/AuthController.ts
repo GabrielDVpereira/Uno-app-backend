@@ -30,6 +30,29 @@ class AuthController {
     }
   }
 
+  async auth(req: Request, res: Response) {
+    try {
+      const user = await UserModel.findOne({ email: req.body.email });
+      if (!user) {
+        throw new Error("User email doesn't exist");
+      }
+
+      const isPassValid = user.checkUserPass(req.body.password);
+
+      if (!isPassValid) {
+        throw new Error("Password is invalid");
+      }
+      const authTokens = user.generateJWT();
+
+      return res.json(authTokens);
+    } catch (error) {
+      return res.status(401).json({
+        message: error.message || "Fail to login the user",
+        error: error.stack,
+      });
+    }
+  }
+
   async refreshToken(req: Request, res: Response) {
     try {
       const { refreshToken } = req.body;
@@ -40,7 +63,7 @@ class AuthController {
       const refreshTokenList = await redisService.getRefreshTokenRedis();
 
       if (!refreshTokenList.includes(refreshToken)) {
-        throw new Error("refresh token invalid ");
+        throw new Error("refresh token invalid");
       }
 
       const payload = <JwtPayload>(

@@ -8,3 +8,4 @@ yarn-error.log
 redis.conf
 bundle
 backend/mongo
+__tests__/coverage
